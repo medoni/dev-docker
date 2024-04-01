@@ -26,6 +26,7 @@ function la() { dir $args }
 function bat() { batcat $args }
 
 # git aliases
+Remove-Alias -name gc,gl -f
 function gl()   { git log --decorate=auto --oneline --graph $args }
 function glfp() { git log --decorate=auto --oneline --graph $args --first-parent $args }
 function gs()   { git status $args }
