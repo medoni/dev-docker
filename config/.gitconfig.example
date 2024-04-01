@@ -1,3 +1,9 @@
+[core]
+    editor = '/mnt/c/Program Files/Sublime Text/subl.exe' -w \"`wslpath -w $1`\"
+    autocrlf = false
+[credential]
+    useHttpPath = true
+    helper = /mnt/c/Users/Micha/scoop/shims/git-credential-manager-core.exe
 [user]
     name = Jane Doe
     email = jane.doe@example.com
@@ -12,3 +18,5 @@
 [difftool "kdiff3"]
     path = /mnt/c/Users/JDoe/scoop/apps/kdiff3/current/bin/kdiff3.exe \"`wslpath -w $LOCAL`\" \"`wslpath -w $REMOTE`\"
     trustExitCode = false
+[credential "helperselector"]
+    selected = manager-core
