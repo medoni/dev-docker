@@ -1,7 +1,15 @@
-FROM alpine:latest
+ARG ALPINE_VERSION=edge
+ARG POWERSHELL_VERSION=7.4.1
+ARG GOLANG_DOCKER_IMAGE=golang:latest
+
+FROM $GOLANG_DOCKER_IMAGE as gobuild
+
+FROM alpine:$ALPINE_VERSION
+ARG ALPINE_VERSION
+ARG POWERSHELL_VERSION
 
 # main packages
-RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositories
+RUN echo http://dl-cdn.alpinelinux.org/alpine/${ALPINE_VERSION}/testing/ >> /etc/apk/repositories
 RUN apk update
 RUN apk add --no-cache \
     bash \
@@ -36,16 +44,17 @@ RUN apk add --no-cache \
     zlib \
     icu-libs
 
-RUN apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
+RUN apk add --no-cache \
     lttng-ust
-RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell-7.4.1-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz
+RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v$POWERSHELL_VERSION/powershell-$POWERSHELL_VERSION-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz
 RUN mkdir -p /opt/microsoft/powershell/7
 RUN tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
 RUN chmod +x /opt/microsoft/powershell/7/pwsh
 RUN ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
 
 # install go
-COPY --from=golang:1.13-alpine /usr/local/go/ /usr/local/go/
+COPY --from=gobuild /usr/local/go/ /usr/local/go/
+RUN go install -v github.com/ardnew/wslpath@latest
 
 # frontend tools
 RUN apk add --no-cache nodejs npm
