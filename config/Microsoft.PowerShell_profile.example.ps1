@@ -47,3 +47,6 @@ function dc() { docker compose $args}
 function subl($file) { & '/mnt/c/Program Files/Sublime Text/subl.exe' $(wslpath -w $file) }
 function cmd() { /mnt/c/Windows/System32/cmd.exe $args } 
 function start($file) { cmd /c start $(wslpath -w $file) }
+
+# others
+function golang() { /usr/local/go/bin/go $args }
