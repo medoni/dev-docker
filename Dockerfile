@@ -12,22 +12,56 @@ ARG POWERSHELL_VERSION
 RUN echo http://dl-cdn.alpinelinux.org/alpine/${ALPINE_VERSION}/testing/ >> /etc/apk/repositories
 RUN apk update
 RUN apk add --no-cache \
-    bash \
-    curl \
-    wget \
+    man-db-doc \
+    openssh openssh-doc \
+    bash bash-doc \
+    curl curl-doc \
+    wget wget-doc \
     man-db \
     build-base \
-    net-tools \
+    net-tools net-tools-doc traceroute-doc \
     traceroute \
-    mtr \
-    git \
-    bat
+    mtr mtr-doc \
+    git git-doc \
+    bat bat-doc
 
 RUN apk add --no-cache \
-    cowsay \
-    fortune \
+    cowsay cowsay-doc \
+    fortune fortune-doc \
     lolcat \
-    figlet
+    figlet figlet-doc
+
+# additional docs
+RUN apk add --no-cache \
+    busybox-doc \
+    binutils-doc \
+    apk-tools-doc \
+    c-ares-doc \
+    ca-certificates-doc \
+    file-doc \
+    gcc-doc \
+    gdbm-doc \
+    gmp-doc \
+    groff-doc \
+    less-doc \
+    libbsd-doc \
+    libedit-doc \
+    libidn-doc \
+    libmd-doc \
+    libpipeline-doc \
+    libpsl-doc \
+    libseccomp-doc \
+    libunistring-doc \
+    make-doc \
+    mpc-doc \
+    patch-doc \
+    pcre-doc \
+    perl-doc \
+    perl-error-doc \
+    readline-doc \
+    tzdata-doc \
+    userspace-rcu-doc \
+    zlib-doc
 
 # powershell
 RUN apk add --no-cache \
@@ -45,7 +79,7 @@ RUN apk add --no-cache \
     icu-libs
 
 # man pages
-RUN apk list -I | sed -rn '/-doc/! s/([a-z-]+[a-z]).*/\1/p' | xargs -tI§ apk add §-doc
+# RUN apk list -I | sed -rn '/-doc/! s/([a-z-]+[a-z]).*/\1/p' | xargs -tI§ apk add §-doc
 
 RUN apk add --no-cache \
     lttng-ust

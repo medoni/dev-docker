@@ -3,7 +3,7 @@
     autocrlf = false
 [credential]
     useHttpPath = true
-    helper = /mnt/c/Users/Micha/scoop/shims/git-credential-manager-core.exe
+    helper = /mnt/c/Users/JDoe/scoop/shims/git-credential-manager-core.exe
 [user]
     name = Jane Doe
     email = jane.doe@example.com
