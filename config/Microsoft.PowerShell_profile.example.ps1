@@ -38,6 +38,7 @@ function ga()   { git add $args }
 function ga()   { git add . $args }
 function gd()   { git diff $args }
 function gcp()  { git cherry-pick  $args }
+function gmt()  { git mergetool $args }
 
 # docker aliases
 function d() { docker $args}

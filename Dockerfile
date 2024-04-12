@@ -44,6 +44,9 @@ RUN apk add --no-cache \
     zlib \
     icu-libs
 
+# man pages
+RUN apk list -I | sed -rn '/-doc/! s/([a-z-]+[a-z]).*/\1/p' | xargs -tI§ apk add §-doc
+
 RUN apk add --no-cache \
     lttng-ust
 RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v$POWERSHELL_VERSION/powershell-$POWERSHELL_VERSION-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz
@@ -54,7 +57,7 @@ RUN ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
 
 # install go
 COPY --from=gobuild /usr/local/go/ /usr/local/go/
-RUN go install -v github.com/ardnew/wslpath@latest
+RUN /usr/local/go/bin/go install -v github.com/ardnew/wslpath@latest
 
 # frontend tools
 RUN apk add --no-cache nodejs npm
