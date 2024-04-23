@@ -12,6 +12,8 @@ ARG POWERSHELL_VERSION
 RUN echo http://dl-cdn.alpinelinux.org/alpine/${ALPINE_VERSION}/testing/ >> /etc/apk/repositories
 RUN apk update
 RUN apk add --no-cache \
+    python3 \
+    util-linux \
     man-db-doc \
     openssh openssh-doc \
     bash bash-doc \
@@ -23,7 +25,10 @@ RUN apk add --no-cache \
     traceroute \
     mtr mtr-doc \
     git git-doc \
-    bat bat-doc
+    bat bat-doc \
+    ncdu \
+    ncdu-doc \
+    trivy
 
 RUN apk add --no-cache \
     cowsay cowsay-doc \
@@ -77,9 +82,6 @@ RUN apk add --no-cache \
     userspace-rcu \
     zlib \
     icu-libs
-
-# man pages
-# RUN apk list -I | sed -rn '/-doc/! s/([a-z-]+[a-z]).*/\1/p' | xargs -tI§ apk add §-doc
 
 RUN apk add --no-cache \
     lttng-ust
