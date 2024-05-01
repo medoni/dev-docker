@@ -1,0 +1,16 @@
+name: dev
+services:
+  pwsh:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    network_mode: host
+    volumes:
+      - "./config/Microsoft.PowerShell_profile.ps1:/root/.config/powershell/Microsoft.PowerShell_profile.ps1"
+      - "./config/.gitconfig:/root/.gitconfig"
+      - "./local/ConsoleHost_history.txt:/root/.local/share/powershell/PSReadLine/ConsoleHost_history.txt"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/mnt/c:/mnt/c"
+      - "/run/WSL:/run/WSL"
+      - "./scripts/:/root/scripts"
