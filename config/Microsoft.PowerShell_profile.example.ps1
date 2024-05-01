@@ -17,13 +17,16 @@ cd /mnt/c/Users/JDoe/projects/
 # environments
 $env:PATH += ":/usr/games"
 $env:PATH += ":/root/go/bin/"
+$env:PATH += ":/root/.local/share/pnpm/"
 
 $env:C_VOLUME_PATH = "/mnt/c"
-$env:projects_VOLUME_PATH = "/mnt/c/Users/XXXX/projects/"
+$env:projects_VOLUME_PATH = "/mnt/c/Users/XXXXX/projects/"
+
+$env:VISUAL="/root/scripts/win-wrap.sh '/mnt/c/Users/XXXXX/scoop/apps/vscode/current/Code.exe' --wait --new-window"
+$env:EDITOR=$env:VISUAL
 
 # basic aliases
 function la() { dir $args }
-function bat() { batcat $args }
 
 # git aliases
 Remove-Alias -name gc,gl -f
@@ -38,12 +41,16 @@ function ga()   { git add $args }
 function ga()   { git add . $args }
 function gd()   { git diff $args }
 function gcp()  { git cherry-pick  $args }
+function gmt()  { git mergetool $args }
 
 # docker aliases
 function d() { docker $args}
 function dc() { docker compose $args}
 
 # windows commands
-function subl($file) { & '/mnt/c/Program Files/Sublime Text/subl.exe' $(wslpath -w $file) }
+function code($file) { & '/mnt/c/Users/XXXXX/scoop/apps/vscode/current/Code.exe' $(wslpath -w $file) }
 function cmd() { /mnt/c/Windows/System32/cmd.exe $args } 
 function start($file) { cmd /c start $(wslpath -w $file) }
+
+# others 
+function golang() { /usr/local/go/bin/go $args }
