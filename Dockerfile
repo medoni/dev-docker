@@ -134,6 +134,8 @@ COPY --from=docker:dind /usr/local/libexec/docker/ /usr/local/libexec/docker/
 
 # setup powershell
 RUN pwsh -command Install-Module -Force DirColors
+RUN pwsh -command Install-Module -Force DockerCompletion
+RUN pwsh -command Install-Module -Force posh-git
 RUN mkdir /root/.local/share/powershell/PSReadLine/ \
     && touch /root/.local/share/powershell/PSReadLine/ConsoleHost_history.txt
 
