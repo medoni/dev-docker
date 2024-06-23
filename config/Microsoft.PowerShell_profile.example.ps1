@@ -1,56 +1,55 @@
 Import-Module DirColors
+Import-Module posh-git
+. /root/scripts/Completitions.ps1 
 
 Set-PSReadlineOption -EditMode Emacs
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-Variable -Name MaximumHistoryCount 32767
 
-$curDir = Split-Path $MyInvocation.MyCommand.Path -Parent
-
 function global:prompt { 
-    Write-Host "";
-    Write-Host "$(get-location -psprovider filesystem)"; 
-    Write-Host "$([char]0x03BB)" -NoNewline -ForegroundColor green; 
-    return " ";
+    Write-Host ""
+    Write-Host "$(get-location -psprovider filesystem)" -ForegroundColor darkgreen
+    Write-Host "$([char]0x03BB)" -NoNewline -ForegroundColor green
+    return " "
 }
-cd /mnt/c/Users/JDoe/projects/
+cd /mnt/c/Users/XXXX/projects/
 
 # environments
 $env:PATH += ":/usr/games"
 $env:PATH += ":/root/go/bin/"
-$env:PATH += ":/root/.local/share/pnpm/"
 
 $env:C_VOLUME_PATH = "/mnt/c"
-$env:projects_VOLUME_PATH = "/mnt/c/Users/XXXXX/projects/"
-
-$env:VISUAL="/root/scripts/win-wrap.sh '/mnt/c/Users/XXXXX/scoop/apps/vscode/current/Code.exe' --wait --new-window"
-$env:EDITOR=$env:VISUAL
+$env:projects_VOLUME_PATH = "/mnt/c/Users/XXXX/projects/"
 
 # basic aliases
-function la() { dir $args }
+function Make-Alias($alias, $target) {
+    $fn = "function global:$($alias) { $($target) `$args }"
+    Invoke-Expression $fn
+
+    Proxy-Completition $alias $target
+}
+Make-Alias 'la' 'dir'
 
 # git aliases
 Remove-Alias -name gc,gl -f
-function gl()   { git log --decorate=auto --oneline --graph $args }
-function glfp() { git log --decorate=auto --oneline --graph $args --first-parent $args }
-function gs()   { git status $args }
-function go()   { git checkout $args }
-function gb()   { git branch $args }
-function gc()   { git commit -a -m $args }
-function gca()  { git commit --amend $args }
-function ga()   { git add $args }
-function ga()   { git add . $args }
-function gd()   { git diff $args }
-function gcp()  { git cherry-pick  $args }
-function gmt()  { git mergetool $args }
+Make-Alias 'gl'   'git log --decorate=auto --oneline --graph'
+Make-Alias 'glfp' 'git log --decorate=auto --oneline --graph --first-parent'
+Make-Alias 'gs'   'git status'
+Make-Alias 'go'   'git checkout'
+Make-Alias 'gb'   'git branch'
+Make-Alias 'gbd'  'git for-each-ref --sort=committerdate refs/heads/ --format="%(committerdate:short) %(refname:short)"'
+Make-Alias 'gc'   'git commit -a -m'
+Make-Alias 'gca'  'git commit --amend'
+Make-Alias 'ga'   'git add'
+Make-Alias 'ga.'  'git add .'
+Make-Alias 'gd'   'git diff'
+Make-Alias 'gcp'  'git cherry-pick'
 
 # docker aliases
-function d() { docker $args}
-function dc() { docker compose $args}
+Make-Alias "d" "docker"
+Make-Alias "dc" "docker compose"
 
 # windows commands
-function code($file) { & '/mnt/c/Users/XXXXX/scoop/apps/vscode/current/Code.exe' $(wslpath -w $file) }
+function code($file) { & '/mnt/c/Users/XXXX/scoop/apps/vscode/current/Code.exe' $(wslpath -w $file) }
 function cmd() { /mnt/c/Windows/System32/cmd.exe $args } 
 function start($file) { cmd /c start $(wslpath -w $file) }
-
-# others 
-function golang() { /usr/local/go/bin/go $args }

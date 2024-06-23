@@ -49,15 +49,17 @@ RUN echo http://dl-cdn.alpinelinux.org/alpine/${ALPINE_VERSION}/testing/ >> /etc
 # main packages
 RUN apk update
 RUN apk add --no-cache \
-    curl curl-doc \
-    wget wget-doc \
     bash bash-doc \
-    man-db man-db-doc \
-    util-linux \
-    openssh openssh-doc \
     bat bat-doc \
+    curl curl-doc \
+    man-db man-db-doc \
+    musl-utils musl-locales \
     ncdu \
-    ncdu-doc
+    ncdu-doc \
+    openssh openssh-doc \
+    tzdata \
+    util-linux \
+    wget wget-doc
 
 # network tools
 RUN apk add --no-cache \
@@ -81,16 +83,19 @@ RUN apk add --no-cache \
 
 # additional docs
 RUN apk add --no-cache \
-    busybox-doc \
-    binutils-doc \
     apk-tools-doc \
+    binutils-doc \
+    busybox-doc \
+    btop \
     c-ares-doc \
     ca-certificates-doc \
+    ctop \
     file-doc \
     gcc-doc \
     gdbm-doc \
     gmp-doc \
     groff-doc \
+    htop \
     less-doc \
     libbsd-doc \
     libedit-doc \
@@ -102,6 +107,7 @@ RUN apk add --no-cache \
     libunistring-doc \
     make-doc \
     mpc-doc \
+    nano \
     patch-doc \
     pcre-doc \
     perl-doc \
@@ -138,5 +144,11 @@ RUN pwsh -command Install-Module -Force DockerCompletion
 RUN pwsh -command Install-Module -Force posh-git
 RUN mkdir /root/.local/share/powershell/PSReadLine/ \
     && touch /root/.local/share/powershell/PSReadLine/ConsoleHost_history.txt
+
+# environment
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV TZ=Europe/Berlin
+RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 ENTRYPOINT pwsh
